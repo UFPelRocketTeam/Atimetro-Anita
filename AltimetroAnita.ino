@@ -23,7 +23,7 @@ File sdFile;
 SFE_BMP180 bmp180;
 char filename[7]="00.TXT";  //nome do arquivo inicial
 
-void setup() 
+void setup()
 {
     Serial.begin(9600);
     while (!Serial) ;
@@ -39,20 +39,20 @@ void setup()
     //Serial.println("5");
 	  pinMode(LED, OUTPUT);
     //Serial.println("Foi!!! =D");
-	
-    if (!SD.begin()) 
+
+    if (!SD.begin())
     {
-        //Serial.println(F("não funciona ou não está presente")); 
+        //Serial.println(F("não funciona ou não está presente"));
         while(1);
     }
-     //Serial.println(F("Cartão de memória inicializado.")); 
+     //Serial.println(F("Cartão de memória inicializado."));
     while(SD.exists(filename))
     {
       if(i<10)
         sprintf(filename,"0%d.TXT",i);
       else
       sprintf(filename,"%2d.TXT",i);
-      i++;    
+      i++;
     }
     sdFile = SD.open(filename, FILE_WRITE);
     digitalWrite(LED,HIGH);
@@ -60,7 +60,7 @@ void setup()
 	  alturamax=altura;
 	  pressao = bmp180.getPressure();
 	  temperatura = bmp180.getTemperatureC();
-	
+
 }
 
 void loop()
@@ -79,8 +79,8 @@ void loop()
         sdFile.println("abriu");
 		}
     if(altura>alturamax)
-	  alturamax=altura;    
-    if (sdFile) 
+	  alturamax=altura;
+    if (sdFile)
     {
         sdFile.print(millis());
         sdFile.print(", ");
@@ -90,8 +90,9 @@ void loop()
         sdFile.print(", ");
         sdFile.println(temperatura);
         sdFile.print("\n");
-     } 
-    else 
+        sdFile.flush();
+     }
+    else
     {
        Serial.println(F("Erro no arquivo."));
     }
@@ -102,4 +103,3 @@ void loop()
        digitalWrite(LED,LOW);
     }
 }
-
